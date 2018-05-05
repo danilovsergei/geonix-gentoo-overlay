@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<repositories version="1.0">
+	<repo priority="-100" quality="experimental" status="unofficial">
+		<name>sergei</name>
+		<description>My local gentoo overlay.</description>
+		<homepage>http://localhost</homepage>
+		<owner>
+			<email>sergeidanilov@gmail.com</email>
+		</owner>
+		<source/>
+	</repo>
+</repositories>

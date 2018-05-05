@@ -1,0 +1,75 @@
+diff -Naur icontasks.original/taskgroupitem.cpp 
+icontasks.working/taskgroupitem.cpp
+--- icontasks.original/taskgroupitem.cpp	2013-05-02 23:42:07.473075964 
+-0500
++++ icontasks.working/taskgroupitem.cpp	2013-06-11 16:51:45.293736302 -0500
+@@ -427,6 +427,7 @@
+ void TaskGroupItem::setGroup(TaskManager::GroupPtr group)
+ {
+     //kDebug();
++    
+     if (m_group.data() == group) {
+         kDebug() << "already have this group!";
+         return;
+@@ -1271,6 +1272,7 @@
+     QString n = agiName(from);
+     KUrl launcherUrl = from->launcherUrl();
+ 
++    return itm;
+     while (it.hasNext()) {
+         it.next();
+         AbstractGroupableItem *item = it.key();
+diff -Naur icontasks.original/tasks.cpp icontasks.working/tasks.cpp
+--- icontasks.original/tasks.cpp	2013-05-02 23:42:07.473075964 -0500
++++ icontasks.working/tasks.cpp	2013-06-11 17:01:44.929720583 -0500
+@@ -85,7 +85,7 @@
+     GroupManager(Plasma::Applet *applet)
+         : TaskManager::GroupManager(applet),
+           m_applet(applet) {
+-        setGroupingStrategy(GroupManager::ProgramGrouping);
++        setGroupingStrategy(GroupManager::NoGrouping);
+         setSortingStrategy(GroupManager::ManualSorting);
+         setShowOnlyCurrentActivity(true);
+         setShowOnlyCurrentDesktop(true);
+@@ -367,12 +367,12 @@
+ 
+ void Tasks::reload()
+ {
+-    TaskGroup *newGroup = m_groupManager->rootGroup();
+-    if (newGroup != m_rootGroupItem->abstractItem()) {
+-        m_rootGroupItem->setGroup(newGroup);
+-    } else {
++   // TaskGroup *newGroup = m_groupManager->rootGroup();
++   // if (newGroup != m_rootGroupItem->abstractItem()) {
++  //      m_rootGroupItem->setGroup(newGroup);
++  //  } else {
+         m_rootGroupItem->reload();
+-    }
++  //  }
+ }
+ 
+ TaskManager::GroupManager &Tasks::groupManager() const
+diff -Naur icontasks.original/windowtaskitem.cpp 
+icontasks.working/windowtaskitem.cpp
+--- icontasks.original/windowtaskitem.cpp	2013-05-02 23:42:07.474075955 
+-0500
++++ icontasks.working/windowtaskitem.cpp	2013-06-11 15:45:31.249840473 
+-0500
+@@ -111,7 +111,7 @@
+ 
+ QString WindowTaskItem::appName() const
+ {
+-    return m_task ? m_task.data()->taskName() : QString();
++    return m_task ? m_task.data()->task()->classClass() + m_task.data()->taskName() : QString();
+ }
+ 
+ KUrl WindowTaskItem::launcherUrl() const
+@@ -121,7 +121,7 @@
+ 
+ QString WindowTaskItem::windowClass() const
+ {
+-    return m_task && m_task.data()->task() ? m_task.data()->task()->classClass() : QString();
++    return m_task && m_task.data()->task() ? m_task.data()->task()->classClass() + m_task.data()->taskName()  : QString();
+ }
+ 
+ void WindowTaskItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
