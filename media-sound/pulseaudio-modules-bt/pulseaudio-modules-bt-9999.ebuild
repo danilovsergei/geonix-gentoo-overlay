@@ -33,17 +33,11 @@ pkg_setup() {
   EGIT_OVERRIDE_COMMIT_PULSEAUDIO_PULSEAUDIO="v"$pulseaudio_version
 }
 
-src_prepare() {
-  eapply "${FILESDIR}/01-missing_pa_thread_make_realtime.patch"
-  eapply_user
-  
+src_prepare() {  
   cmake-utils_src_prepare
 }
 
 src_configure() {
-    local mycmakeargs=(
-            -DFORCE_LARGEST_PA_VERSION=ON
-    )
     cmake-utils_src_configure
 }
 
